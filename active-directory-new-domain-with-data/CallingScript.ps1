@@ -22,15 +22,10 @@ Login-AzureRmAccount
 
 # Adjust the 'yournamehere' part of these three strings to
 # something unique for you. Leave the last two characters in each.
-$URI       = 'https://raw.githubusercontent.com/GoateePFE/AzureRM/master/active-directory-new-domain-with-data/azuredeploy.json'
-$Location  = 'east us'
+$URI       = 'https://raw.githubusercontent.com/rcarboneras/Psdemotraining/master/active-directory-new-domain-with-data/azuredeploy.json'
+$Location  = 'West Europe'
 $rgname    = 'yournamehererg'
 $saname    = 'yournameheresa'     # Lowercase required
-$addnsName = 'yournameheread'     # Lowercase required
-
-# Check that the public dns $addnsName is available
-if (Test-AzureRmDnsAvailability -DomainNameLabel $addnsName -Location $Location)
-{ 'Available' } else { 'Taken. addnsName must be globally unique.' }
 
 # Create the new resource group. Runs quickly.
 New-AzureRmResourceGroup -Name $rgname -Location $Location
@@ -38,9 +33,8 @@ New-AzureRmResourceGroup -Name $rgname -Location $Location
 # Parameters for the template and configuration
 $MyParams = @{
     newStorageAccountName = $saname
-    location              = 'East US'
-    domainName            = 'alpineskihouse.com'
-    addnsName             = $addnsName
+    location              = 'West Europe'
+    domainName            = 'contoso.com'
    }
 
 # Splat the parameters on New-AzureRmResourceGroupDeployment  
@@ -58,13 +52,12 @@ New-AzureRmResourceGroupDeployment @SplatParams -Verbose
 # Find the VM IP and FQDN
 $PublicAddress = (Get-AzureRmPublicIpAddress -ResourceGroupName $rgname)[0]
 $IP   = $PublicAddress.IpAddress
-$FQDN = $PublicAddress.DnsSettings.Fqdn
+
 
 # RDP either way
-Start-Process -FilePath mstsc.exe -ArgumentList "/v:$FQDN"
 Start-Process -FilePath mstsc.exe -ArgumentList "/v:$IP"
 
-# Login as:  alpineskihouse\adadministrator
+# Login as:  contoso\administrator
 # Use the password you supplied at the beginning of the build.
 
 # Explore the Active Directory domain:
