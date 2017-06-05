@@ -2,13 +2,14 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.1",
     "parameters": {
-        "ADadminPassword": {
+        "AdAdminPassword": {
             "type": "securestring",
             "metadata": {
                 "description": "The password for the Administrator account of the Domain"
+            
             }
         },
-        "ADadminUserName": {
+        "AdAdminUserName": {
             "defaultValue": "Administrator",
             "metadata": {
                 "description": "The name of the Administrator account of the Domain"
@@ -354,14 +355,14 @@
                             "Properties": {
                                 "DomainName": "[parameters('domainName')]",
                                 "AdminCreds": {
-                                    "UserName": "[parameters('ADadminUserName')]",
-                                    "Password": "PrivateSettingsRef:ADadminPassword"
+                                    "UserName": "[parameters('AdAdminUserName')]",
+                                    "Password": "PrivateSettingsRef:AdAdminPassword"
                                 }
                             }
                         },
                         "protectedSettings": {
                             "Items": {
-                                "ADadminPassword": "[parameters('ADadminPassword')]"
+                                "AdAdminPassword": "[parameters('AdAdminPassword')]"
                             },
                             "DataBlobUri": "[concat(parameters('assetLocation'),'CreateADDomainWithData.psd1')]"
                         }
