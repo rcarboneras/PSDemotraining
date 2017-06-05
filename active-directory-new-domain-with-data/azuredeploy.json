@@ -2,19 +2,19 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.1",
     "parameters": {
-        "AdAdminPassword": {
-            "type": "securestring",
-            "metadata": {
-                "description": "The password for the Administrator account of the Domain"
-            
-            }
-        },
         "AdAdminUserName": {
             "defaultValue": "Administrator",
             "metadata": {
                 "description": "The name of the Administrator account of the Domain"
             },
             "type": "string"
+        },
+        "AdAdminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The password for the Administrator account of the Domain"
+
+            }
         },
         "LocaladminUsername": {
             "defaultValue": "Localadmin",
@@ -36,7 +36,7 @@
             "metadata": {
                 "description": "The IP address of the new AD VM"
             },
-            "defaultValue": "10.0.0.4"
+            "defaultValue": "10.0.1.200"
         },
         "DCNicName": {
             "type": "string",
@@ -103,13 +103,6 @@
             "metadata": {
                 "description": "The FQDN of the AD Domain created ",
                 "defaultValue": "contoso.com"
-            }
-        },
-        "imageOffer": {
-            "type": "string",
-            "defaultValue": "WindowsServer",
-            "metadata": {
-                "description": "Image Offer"
             }
         },
         "imagePublisher": {
@@ -204,9 +197,9 @@
         "adConfigurationFunction": "CreateADDomainWithData.ps1\\CreateADDomainWithData",
         "adDataDisk": "ADDataDisk",
         "adDataDiskSize": 5,
-        "adIPConfigID": "[concat(variables('adNicId'),'/ipConfigurations/ipconfig1')]",
+        "adIPConfigID": "[concat(variables('DCNicId'),'/ipConfigurations/ipconfig1')]",
         "adModulesURL": "[concat(parameters('assetLocation'),'CreateADDomainWithData.ps1.zip')]",
-        "adNicId": "[resourceId('Microsoft.Network/networkInterfaces',parameters('DCNicName'))]",
+        "DCNicId": "[resourceId('Microsoft.Network/networkInterfaces',parameters('DCNicName'))]",
         "PSDemoSubnetRef": "[concat(variables('VnetID'),'/subnets/',parameters('PSDemoSubnetName'))]",
         "VnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "vnetTemplateUri": "[concat(parameters('assetLocation'),'vnet.json')]",
@@ -303,7 +296,7 @@
                 "storageProfile": {
                     "imageReference": {
                         "publisher": "[parameters('imagePublisher')]",
-                        "offer": "[parameters('imageOffer')]",
+                        "offer": "WindowsServer",
                         "sku": "[parameters('imageSKU')]",
                         "version": "latest"
                     },
