@@ -29,19 +29,19 @@
             },
             "defaultValue": "adNic"
         },
-        "adSubnet": {
+        "PSDemoSubnet": {
             "type": "string",
             "metadata": {
                 "description": "The address range of the subnet created in the new VNET"
             },
             "defaultValue": "10.0.0.0/24"
         },
-        "adSubnetName": {
+        "PSDemoSubnetName": {
             "type": "string",
             "metadata": {
                 "description": "The name of the subnet created in the new VNET"
             },
-            "defaultValue": "adSubnet"
+            "defaultValue": "PSDemoSubnet"
         },
         "adVMName": {
             "type": "string",
@@ -222,10 +222,10 @@
                         "value": "[parameters('virtualNetworkAddressRange')]"
                     },
                     "subnetName": {
-                        "value": "[parameters('adSubnetName')]"
+                        "value": "[parameters('PSDemoSubnetName')]"
                     },
                     "subnetRange": {
-                        "value": "[parameters('adSubnet')]"
+                        "value": "[parameters('PSDemoSubnet')]"
                     }
                 }
             }
@@ -243,7 +243,7 @@
                             "privateIPAllocationMethod": "Static",
                             "privateIPAddress": "[parameters('adNicIPAddress')]",
                             "subnet": {
-                                "id": "[variables('adSubnetRef')]"
+                                "id": "[variables('PSDemoSubnetRef')]"
                             }
                         }
                     }
@@ -351,7 +351,7 @@
         "adIPConfigID": "[concat(variables('adNicId'),'/ipConfigurations/ipconfig1')]",
         "adModulesURL": "[concat(parameters('assetLocation'),'CreateADDomainWithData.ps1.zip')]",
         "adNicId": "[resourceId('Microsoft.Network/networkInterfaces',parameters('adNicName'))]",
-        "adSubnetRef": "[concat(variables('VnetID'),'/subnets/',parameters('adSubnetName'))]",
+        "PSDemoSubnetRef": "[concat(variables('VnetID'),'/subnets/',parameters('PSDemoSubnetName'))]",
         "VnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "vnetTemplateUri": "[concat(parameters('assetLocation'),'vnet.json')]",
         "vnetwithDNSTemplateUri": "[concat(parameters('assetLocation'),'vnet-with-dns-server.json')]"
