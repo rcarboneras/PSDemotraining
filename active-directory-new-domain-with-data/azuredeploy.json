@@ -259,7 +259,6 @@
                 "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
                 "[resourceId('Microsoft.Network/networkInterfaces',parameters('adNicName'))]",
                 "[resourceId('Microsoft.Compute/availabilitySets', parameters('adAvailabilitySetName'))]",
-                "[resourceId('Microsoft.Network/loadBalancers',variables('adlbName'))]"
             ],
             "properties": {
                 "hardwareProfile": {
@@ -343,55 +342,15 @@
                     }
                 }
             ]
-        },
-        {
-            "name": "UpdateVNetDNS",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2015-01-01",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('adVMName'),'/extensions/CreateADForest')]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[variables('vnetwithDNSTemplateUri')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "location": {
-                        "value": "[parameters('location')]"
-                    },
-                    "virtualNetworkName": {
-                        "value": "[parameters('virtualNetworkName')]"
-                    },
-                    "virtualNetworkAddressRange": {
-                        "value": "[parameters('virtualNetworkAddressRange')]"
-                    },
-                    "subnetName": {
-                        "value": "[parameters('adSubnetName')]"
-                    },
-                    "subnetRange": {
-                        "value": "[parameters('adSubnet')]"
-                    },
-                    "DNSServerAddress": {
-                        "value": [
-                            "[parameters('adNicIPAddress')]"
-                        ]
-                    }
-                }
-            }
         }
     ],
     "variables": {
-        "adBEAddressPoolID": "[concat(variables('adlbID'),'/backendAddressPools/',variables('adLBBE'))]",
         "adConfigurationFunction": "CreateADDomainWithData.ps1\\CreateADDomainWithData",
         "adDataDisk": "ADDataDisk",
         "adDataDiskSize": 5,
         "adIPConfigID": "[concat(variables('adNicId'),'/ipConfigurations/ipconfig1')]",
         "adModulesURL": "[concat(parameters('assetLocation'),'CreateADDomainWithData.ps1.zip')]",
         "adNicId": "[resourceId('Microsoft.Network/networkInterfaces',parameters('adNicName'))]",
-        "adRDPNAT": "adRDP",
-        "adRDPNATRuleID": "[concat(variables('adlbID'),'/inboundNatRules/',variables('adRDPNAT'))]",
         "adSubnetRef": "[concat(variables('VnetID'),'/subnets/',parameters('adSubnetName'))]",
         "VnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "vnetTemplateUri": "[concat(parameters('assetLocation'),'vnet.json')]",
