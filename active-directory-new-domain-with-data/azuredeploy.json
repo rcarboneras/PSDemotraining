@@ -85,7 +85,8 @@
         "domainName": {
             "type": "string",
             "metadata": {
-                "description": "The FQDN of the AD Domain created "
+                "description": "The FQDN of the AD Domain created ",
+                "defaultValue": "contoso.com"
             }
         },
         "imageOffer": {
@@ -185,13 +186,13 @@
     },
     "resources": [
         {
-            "type": "Microsoft.Storage/storageAccounts",
-            "name": "[parameters('newStorageAccountName')]",
             "apiVersion": "2015-05-01-preview",
             "location": "[parameters('location')]",
+            "name": "[parameters('newStorageAccountName')]",
             "properties": {
                 "accountType": "[parameters('storageAccountType')]"
-            }
+            },
+            "type": "Microsoft.Storage/storageAccounts"
         },
         {
             "apiVersion": "2015-05-01-preview",
@@ -203,15 +204,10 @@
             }
         },
         {
-            "name": "VNet",
-            "type": "Microsoft.Resources/deployments",
             "apiVersion": "2015-01-01",
+            "name": "VNet",
             "properties": {
                 "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[variables('vnetTemplateUri')]",
-                    "contentVersion": "1.0.0.0"
-                },
                 "parameters": {
                     "location": {
                         "value": "[parameters('location')]"
@@ -228,14 +224,19 @@
                     "subnetRange": {
                         "value": "[parameters('PSDemoSubnet')]"
                     }
+                },
+                "templateLink": {
+                    "uri": "[variables('vnetTemplateUri')]",
+                    "contentVersion": "1.0.0.0"
                 }
-            }
+            },
+            "type": "Microsoft.Resources/deployments"
         },
         {
-            "name": "[parameters('adNicName')]",
-            "type": "Microsoft.Network/networkInterfaces",
-            "location": "[parameters('location')]",
             "apiVersion": "2015-05-01-preview",
+            "location": "[parameters('location')]",
+            "DependsOn" : "Microsoft.Resources/deployments/VNet",
+            "name": "[parameters('adNicName')]",
             "properties": {
                 "ipConfigurations": [
                     {
@@ -249,7 +250,8 @@
                         }
                     }
                 ]
-            }
+            },
+            "type": "Microsoft.Network/networkInterfaces"
         },
         {
             "apiVersion": "2015-05-01-preview",
@@ -354,5 +356,3 @@
         "vnetwithDNSTemplateUri": "[concat(parameters('assetLocation'),'vnet-with-dns-server.json')]"
     }
 }
-
-
