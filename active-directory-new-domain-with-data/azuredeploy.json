@@ -258,14 +258,10 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
                 "[resourceId('Microsoft.Network/networkInterfaces',parameters('adNicName'))]",
-                "[resourceId('Microsoft.Compute/availabilitySets', parameters('adAvailabilitySetName'))]",
             ],
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('adVMSize')]"
-                },
-                "availabilitySet": {
-                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('adAvailabilitySetName'))]"
                 },
                 "osProfile": {
                     "computerName": "[parameters('adVMName')]",
