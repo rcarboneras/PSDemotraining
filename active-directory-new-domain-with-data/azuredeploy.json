@@ -199,9 +199,6 @@
             "location": "[parameters('location')]",
             "properties": {
                 "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
-                "dnsSettings": {
-                    "domainNameLabel": "[parameters('addnsName')]"
-                }
             }
         },
         {
