@@ -31,20 +31,6 @@
             }
 
         },
-        "DCVMName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the 2012 DC Server VM"
-            },
-            "defaultValue": "2012R2-DC"
-        },
-        "DCNicName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the NIC attached to the new VM"
-            },
-            "defaultValue": "DCNic"
-        },
         "DCNicIPAddress": {
             "type": "string",
             "metadata": {
@@ -52,54 +38,19 @@
             },
             "defaultValue": "10.0.1.200"
         },
-        "MSVMName": {
+        "DCNicName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the 2012 MS Server VM"
+                "description": "The name of the NIC attached to the new VM"
             },
-            "defaultValue": "2012R2-MS"
-        },
-        "MSNicName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the NIC attached to the MS VM"
-            },
-            "defaultValue": "MSNic"
-        },
-        "MSNicIPAddress": {
-            "type": "string",
-            "metadata": {
-                "description": "The IP address of the MS VM"
-            },
-            "defaultValue": "10.0.1.210"
-        },
-        "W8VMName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the Windows 8 VM"
-            },
-            "defaultValue": "WIN8-WS"
-        },
-        "W8NicName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the NIC attached to the W8 VM"
-            },
-            "defaultValue": "W8Nic"
-        },
-        "W8NicIPAddress": {
-            "type": "string",
-            "metadata": {
-                "description": "The IP address of the W8 VM"
-            },
-            "defaultValue": "10.0.1.220"
+            "defaultValue": "adNic"
         },
         "PSDemoSubnet": {
             "type": "string",
             "metadata": {
                 "description": "The address range of the subnet created in the new VNET"
             },
-            "defaultValue": "10.0.1.0/24"
+            "defaultValue": "10.0.0.0/24"
         },
         "PSDemoSubnetName": {
             "type": "string",
@@ -108,7 +59,14 @@
             },
             "defaultValue": "PSDemoSubnet"
         },
-        "VMSize": {
+        "DCVMName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the VM created"
+            },
+            "defaultValue": "2012R2-DC"
+        },
+        "adVMSize": {
             "type": "string",
             "allowedValues": [
                 "Standard_D1",
@@ -129,7 +87,7 @@
                 "Standard_DS14"
             ],
             "metadata": {
-                "description": "The size of the VMs Created"
+                "description": "The size of the VM Created"
             },
             "defaultValue": "Standard_D1"
         },
@@ -145,6 +103,13 @@
             "metadata": {
                 "description": "The FQDN of the AD Domain created ",
                 "defaultValue": "contoso.com"
+            }
+        },
+        "imagePublisher": {
+            "type": "string",
+            "defaultValue": "MicrosoftWindowsServer",
+            "metadata": {
+                "description": "Image Publisher"
             }
         },
         "imageSKU": {
@@ -175,23 +140,9 @@
             }
         },
         "DCpublicIPAddressName": {
-            "defaultValue": "DCpublicIP",
+            "defaultValue": "adpublicIP",
             "metadata": {
                 "description": "The name of the public IP address used by the DC"
-            },
-            "type": "string"
-        },
-        "MSpublicIPAddressName": {
-            "defaultValue": "MSpublicIP",
-            "metadata": {
-                "description": "The name of the public IP address used by the MS"
-            },
-            "type": "string"
-        },
-        "W8publicIPAddressName": {
-            "defaultValue": "W8publicIP",
-            "metadata": {
-                "description": "The name of the public IP address used by the W8"
             },
             "type": "string"
         },
@@ -239,7 +190,7 @@
             "metadata": {
                 "description": "The name of the Virtual Network to Create"
             },
-            "defaultValue": "PSDemoVNET"
+            "defaultValue": "adVNET"
         }
     },
     "variables": {
@@ -248,9 +199,6 @@
         "adDataDiskSize": 5,
         "adIPConfigID": "[concat(variables('DCNicId'),'/ipConfigurations/ipconfig1')]",
         "adModulesURL": "[concat(parameters('assetLocation'),'CreateADDomainWithData.ps1.zip')]",
-        "MSConfigurationFunction": "CreateADDomainWithData.ps1\\CreateADDomainWithData",
-        "MSIPConfigID": "[concat(variables('DCNicId'),'/ipConfigurations/ipconfig1')]",
-        "MSModulesURL": "[concat(parameters('assetLocation'),'CreateADDomainWithData.ps1.zip')]",
         "DCNicId": "[resourceId('Microsoft.Network/networkInterfaces',parameters('DCNicName'))]",
         "PSDemoSubnetRef": "[concat(variables('VnetID'),'/subnets/',parameters('PSDemoSubnetName'))]",
         "VnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
@@ -271,24 +219,6 @@
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2015-05-01-preview",
             "name": "[parameters('DCpublicIPAddressName')]",
-            "location": "[parameters('location')]",
-            "properties": {
-                "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
-            }
-        },
-        {
-            "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2015-05-01-preview",
-            "name": "[parameters('MSpublicIPAddressName')]",
-            "location": "[parameters('location')]",
-            "properties": {
-                "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
-            }
-        },
-        {
-            "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2015-05-01-preview",
-            "name": "[parameters('W8publicIPAddressName')]",
             "location": "[parameters('location')]",
             "properties": {
                 "publicIPAllocationMethod": "[parameters('publicIPAddressType')]"
@@ -324,10 +254,9 @@
             }
         },
         {
-            "name": "[parameters('DCNicName')]",
-            "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2015-05-01-preview",
             "location": "[parameters('location')]",
+            "name": "[parameters('DCNicName')]",
             "properties": {
                 "ipConfigurations": [
                     {
@@ -342,68 +271,22 @@
                     }
                 ]
             },
-            "dependsOn": [
-                "Microsoft.Resources/deployments/VNet"
-            ]
-        },
-        {
-            "name": "[parameters('MSNicName')]",
             "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2015-05-01-preview",
-            "location": "[parameters('location')]",
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig2",
-                        "properties": {
-                            "privateIPAllocationMethod": "Static",
-                            "privateIPAddress": "[parameters('MSNicIPAddress')]",
-                            "subnet": {
-                                "id": "[variables('PSDemoSubnetRef')]"
-                            }
-                        }
-                    }
-                ]
-            },
             "dependsOn": [
                 "Microsoft.Resources/deployments/VNet"
             ]
         },
         {
-            "name": "[parameters('W8NicName')]",
-            "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2015-05-01-preview",
-            "location": "[parameters('location')]",
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig2",
-                        "properties": {
-                            "privateIPAllocationMethod": "Static",
-                            "privateIPAddress": "[parameters('W8NicIPAddress')]",
-                            "subnet": {
-                                "id": "[variables('PSDemoSubnetRef')]"
-                            }
-                        }
-                    }
-                ]
-            },
-            "dependsOn": [
-                "Microsoft.Resources/deployments/VNet"
-            ]
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines",
-            "name": "[parameters('DCVMName')]",
             "apiVersion": "2015-05-01-preview",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
                 "[resourceId('Microsoft.Network/networkInterfaces',parameters('DCNicName'))]"
             ],
             "location": "[parameters('location')]",
+            "name": "[parameters('DCVMName')]",
             "properties": {
                 "hardwareProfile": {
-                    "vmSize": "[parameters('VMSize')]"
+                    "vmSize": "[parameters('adVMSize')]"
                 },
                 "osProfile": {
                     "computerName": "[parameters('DCVMName')]",
@@ -412,7 +295,7 @@
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "publisher": "MicrosoftWindowsServer",
+                        "publisher": "[parameters('imagePublisher')]",
                         "offer": "WindowsServer",
                         "sku": "[parameters('imageSKU')]",
                         "version": "latest"
@@ -479,161 +362,8 @@
                     },
                     "type": "Microsoft.Compute/virtualMachines/extensions"
                 }
-            ]
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "2015-05-01-preview",
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
-                "[resourceId('Microsoft.Network/networkInterfaces',parameters('MSNicName'))]"
             ],
-            "location": "[parameters('location')]",
-            "name": "[parameters('MSVMName')]",
-            "properties": {
-                "hardwareProfile": {
-                    "vmSize": "[parameters('VMSize')]"
-                },
-                "osProfile": {
-                    "computerName": "[parameters('MSVMName')]",
-                    "adminUserName": "[parameters('LocaladminUserName')]",
-                    "adminPassword": "[parameters('LocaladminPassword')]"
-                },
-                "storageProfile": {
-                    "imageReference": {
-                        "publisher": "MicrosoftWindowsServer",
-                        "offer": "WindowsServer",
-                        "sku": "[parameters('imageSKU')]",
-                        "version": "latest"
-                    },
-                    "osDisk": {
-                        "name": "osdisk",
-                        "vhd": {
-                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/',parameters('MSVMName'),'osdisk.vhd')]"
-                        },
-                        "caching": "ReadWrite",
-                        "createOption": "FromImage"
-                    }
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('MSNicName'))]"
-                        }
-                    ]
-                }
-            },
-            "resources": [
-                {
-                    "apiVersion": "2015-05-01-preview",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Compute/virtualMachines', parameters('MSVMName'))]"
-                    ],
-                    "location": "[parameters('location')]",
-                    "name": "[concat(parameters('MSVMName'),'/CreateADForest')]",
-                    "properties": {
-                        "publisher": "Microsoft.Powershell",
-                        "type": "DSC",
-                        "typeHandlerVersion": "2.11",
-                        "autoUpgradeMinorVersion": true,
-                        "settings": {
-                            "ModulesUrl": "[variables('adModulesURL')]",
-                            "ConfigurationFunction": "[variables('adConfigurationFunction')]",
-                            "Properties": {
-                                "DomainName": "[parameters('domainName')]",
-                                "AdminCreds": {
-                                    "UserName": "[parameters('AdAdminUserName')]",
-                                    "Password": "PrivateSettingsRef:AdAdminPassword"
-                                }
-                            }
-                        },
-                        "protectedSettings": {
-                            "Items": {
-                                "AdAdminPassword": "[parameters('AdAdminPassword')]"
-                            },
-                            "DataBlobUri": "[concat(parameters('assetLocation'),'CreateADDomainWithData.psd1')]"
-                        }
-                    },
-                    "type": "Microsoft.Compute/virtualMachines/extensions"
-                }
-            ]
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "2015-05-01-preview",
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
-                "[resourceId('Microsoft.Network/networkInterfaces',parameters('W8NicName'))]"
-            ],
-            "location": "[parameters('location')]",
-            "name": "[parameters('W8VMName')]",
-            "properties": {
-                "hardwareProfile": {
-                    "vmSize": "[parameters('VMSize')]"
-                },
-                "osProfile": {
-                    "computerName": "[parameters('W8VMName')]",
-                    "adminUserName": "[parameters('LocaladminUserName')]",
-                    "adminPassword": "[parameters('LocaladminPassword')]"
-                },
-                "storageProfile": {
-                    "imageReference": {
-                        "publisher": "MicrosoftVisualStudio",
-                        "offer": "Windows",
-                        "sku": "Win81-Ent-N-x64",
-                        "version": "latest"
-                    },
-                    "osDisk": {
-                        "name": "osdisk",
-                        "vhd": {
-                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk.vhd')]"
-                        },
-                        "caching": "ReadWrite",
-                        "createOption": "FromImage"
-                    },
-                    "networkProfile": {
-                        "networkInterfaces": [
-                            {
-                                "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('W8NicName'))]"
-                            }
-                        ]
-                    }
-                },
-                "resources": [
-                    {
-                        "apiVersion": "2015-05-01-preview",
-                        "dependsOn": [
-                            "[resourceId('Microsoft.Compute/virtualMachines', parameters('DCVMName'))]"
-                        ],
-                        "location": "[parameters('location')]",
-                        "name": "[concat(parameters('DCVMName'),'/CreateADForest')]",
-                        "properties": {
-                            "publisher": "Microsoft.Powershell",
-                            "type": "DSC",
-                            "typeHandlerVersion": "2.11",
-                            "autoUpgradeMinorVersion": true,
-                            "settings": {
-                                "ModulesUrl": "[variables('adModulesURL')]",
-                                "ConfigurationFunction": "[variables('adConfigurationFunction')]",
-                                "Properties": {
-                                    "DomainName": "[parameters('domainName')]",
-                                    "AdminCreds": {
-                                        "UserName": "[parameters('AdAdminUserName')]",
-                                        "Password": "PrivateSettingsRef:AdAdminPassword"
-                                    }
-                                }
-                            },
-                            "protectedSettings": {
-                                "Items": {
-                                    "AdAdminPassword": "[parameters('AdAdminPassword')]"
-                                },
-                                "DataBlobUri": "[concat(parameters('assetLocation'),'CreateADDomainWithData.psd1')]"
-                            }
-                        },
-                        "type": "Microsoft.Compute/virtualMachines/extensions"
-                    }
-                ]
-            }
+            "type": "Microsoft.Compute/virtualMachines"
         }
     ]
 }
