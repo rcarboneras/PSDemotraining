@@ -147,13 +147,6 @@
                 "defaultValue": "contoso.com"
             }
         },
-        "imageSKU": {
-            "type": "string",
-            "defaultValue": "2012-R2-Datacenter",
-            "metadata": {
-                "description": "Image SKU"
-            }
-        },
         "location": {
             "type": "string",
             "allowedValues": [
@@ -251,7 +244,7 @@
     },
     "variables": {
         "adConfigurationFunction": "CreateADDomainWithData.ps1\\CreateADDomainWithData",
-        "adDataDisk": "ADDataDisk",
+        "adDataDisk": "[concat(parameters('DCVMName'),'DataDisk')]",
         "adDataDiskSize": 5,
         "adModulesURL": "[concat(parameters('assetLocation'),'CreateADDomainWithData.ps1.zip')]",
         "MSConfigurationFunction": "CreateADDomainWithData.ps1\\CreateADDomainWithData",
@@ -463,13 +456,13 @@
                     "imageReference": {
                         "publisher": "MicrosoftWindowsServer",
                         "offer": "WindowsServer",
-                        "sku": "[parameters('imageSKU')]",
+                        "sku": "2012-R2-Datacenter",
                         "version": "latest"
                     },
                     "osDisk": {
                         "name": "osdisk",
                         "vhd": {
-                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk.vhd')]"
+                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/',parameters('DCVMName'),'osdisk.vhd')]"
                         },
                         "caching": "ReadWrite",
                         "createOption": "FromImage"
@@ -518,7 +511,7 @@
                     "imageReference": {
                         "publisher": "MicrosoftWindowsServer",
                         "offer": "WindowsServer",
-                        "sku": "[parameters('imageSKU')]",
+                        "sku": "2012-R2-Datacenter",
                         "version": "latest"
                     },
                     "osDisk": {
