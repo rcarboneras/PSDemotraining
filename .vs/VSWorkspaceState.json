@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\active-directory-new-domain-with-data"
   ],
-  "SelectedNode": "\\azuredeploy.json",
+  "SelectedNode": "\\active-directory-new-domain-with-data\\CallingScript.ps1",
   "PreviewInSolutionExplorer": true
 }

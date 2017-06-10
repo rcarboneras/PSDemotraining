@@ -33,10 +33,8 @@ Harriet,PowerShell4,Operations,Specialist
 
 
         RootOUs = 'Accounting','IT','Marketing','Operations'
-
-        ChildOUs = 'Users','Computers','Groups'
-
-        TestObjCount = 5
+		ChildOUs = 'Users','Computers','Groups'
+		TestObjCount = 5
 
 
 
