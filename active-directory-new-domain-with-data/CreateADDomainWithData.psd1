@@ -9,16 +9,6 @@
             PSDscAllowDomainUser = $true
 
         }
-
-                @{ 
-
-            Nodename = 'node1'
-
-            PSDscAllowDomainUser = $true
-
-        }
-
-
     )
 
 
@@ -29,26 +19,15 @@
 
 
         UserData = @'
-
 UserName,Password,Dept,Title
-
-Alice,P@ssw0rd,Accounting,Manager
-
 DanPark,PowerShell4,IT,Specialist
-
-Charlie,P@ssw0rd,Marketing,Manager
-
-Debbie,P@ssw0rd,Operations,Manager
-
-Eddie,P@ssw0rd,Accounting,Specialist
-
-Frieda,P@ssw0rd,IT,Specialist
-
-George,P@ssw0rd,Marketing,Specialist
-
-Harriet,P@ssw0rd,Operations,Specialist
-
-
+Alice,PowerShell4,Accounting,Manager
+Charlie,PowerShell4,Marketing,Manager
+Debbie,PowerShell4,Operations,Manager
+Eddie,PowerShell4,Accounting,Specialist
+Frieda,PowerShell4,IT,Specialist
+George,PowerShell4,Marketing,Specialist
+Harriet,PowerShell4,Operations,Specialist
 '@
 
 
