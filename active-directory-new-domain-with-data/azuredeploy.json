@@ -551,7 +551,10 @@
                     ]
                 }
             },
-            "dependsOn": Microsoft.Resources/deployments
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces',parameters('MSNicName'))]"
+            ],
             "resources": [
                 {
                     "type": "Microsoft.Compute/virtualMachines/extensions",
