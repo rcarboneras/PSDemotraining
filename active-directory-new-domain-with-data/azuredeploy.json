@@ -322,7 +322,7 @@
                     },
                     "subnetRange": {
                         "value": "[parameters('PSDemoSubnet')]"
-                    },                    
+                    },
                     "DNSServerAddress": {
                         "value": [
                             "[parameters('DCNicIPAddress')]"
@@ -567,7 +567,8 @@
                     "apiVersion": "2015-05-01-preview",
                     "location": "[parameters('location')]",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Compute/virtualMachines', parameters('MSVMName'))]"
+                        "[resourceId('Microsoft.Compute/virtualMachines', parameters('MSVMName'))]",
+                        "[resourceId('Microsoft.Compute/virtualMachines/extensions', concat(parameters('DCVMName'),'/CreateADForest'))]"
                     ],
                     "properties": {
                         "publisher": "Microsoft.Powershell",
