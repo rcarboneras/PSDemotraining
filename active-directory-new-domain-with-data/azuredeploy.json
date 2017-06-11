@@ -551,10 +551,7 @@
                     ]
                 }
             },
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
-                "[resourceId('Microsoft.Network/networkInterfaces',parameters('MSNicName'))]"
-            ],
+            "dependsOn": Microsoft.Resources/deployments
             "resources": [
                 {
                     "type": "Microsoft.Compute/virtualMachines/extensions",
@@ -563,8 +560,7 @@
                     "location": "[parameters('location')]",
                     "dependsOn": [
                         "[resourceId('Microsoft.Compute/virtualMachines', parameters('MSVMName'))]",
-                        "[resourceId('Microsoft.Compute/virtualMachines/extensions', concat(parameters('DCVMName'),'/CreateADForest'))]"
-
+                        "[resourceId('Microsoft.Resources/deployments', 'UpdateVNetDNS')]"
                     ],
                     "properties": {
                         "publisher": "Microsoft.Powershell",
