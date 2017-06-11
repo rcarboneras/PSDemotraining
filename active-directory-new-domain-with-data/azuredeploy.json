@@ -10,7 +10,7 @@
             }
         },
         "AdAdminUserName": {
-            "defaultValue": "Administrator",
+            "defaultValue": "ADAdministrator",
             "metadata": {
                 "description": "The name of the Administrator account of the Domain and VMs"
             },
