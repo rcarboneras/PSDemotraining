@@ -322,8 +322,8 @@
                     },
                     "subnetRange": {
                         "value": "[parameters('PSDemoSubnet')]"
-                    },
-                    "DNSServerAddressfromtemplate": {
+                    },                    
+                    "DNSServerAddress": {
                         "value": [
                             "[parameters('DCNicIPAddress')]"
                         ]
