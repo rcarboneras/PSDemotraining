@@ -322,6 +322,11 @@
                     },
                     "subnetRange": {
                         "value": "[parameters('PSDemoSubnet')]"
+                    },
+                    "DNSServerAddressfromtemplate": {
+                        "value": [
+                            "[parameters('DCNicIPAddress')]"
+                        ]
                     }
                 },
                 "templateLink": {
