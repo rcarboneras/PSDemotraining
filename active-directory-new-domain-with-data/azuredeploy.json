@@ -231,11 +231,11 @@
         "adConfigurationFunction": "CreateADDomainWithData.ps1\\CreateADDomainWithData",
         "adDataDisk": "[concat(parameters('DCVMName'),'DataDisk')]",
         "adDataDiskSize": 5,
+        "AddtoADConfiguration": "AddComputerADDomain.ps1\\ADtotheDomain",
         "adModulesURL": "[concat(parameters('assetLocation'),'CreateADDomainWithData.ps1.zip')]",
-        "MSConfigurationFunction": "CreateADDomainWithData.ps1\\CreateADDomainWithData",
-        "ADtoADConfiguration": "ADComputerADDomain.ps1\\ADtotheDomain",
-        "MSModulesURL": "[concat(parameters('assetLocation'),'CreateADDomainWithData.ps1.zip')]",
         "DCNicId": "[resourceId('Microsoft.Network/networkInterfaces',parameters('DCNicName'))]",
+        "MSConfigurationFunction": "CreateADDomainWithData.ps1\\CreateADDomainWithData",
+        "MSModulesURL": "[concat(parameters('assetLocation'),'AddComputerADDomain.ps1.zip')]",
         "PSDemoSubnetRef": "[concat(variables('VnetID'),'/subnets/',parameters('PSDemoSubnetName'))]",
         "VnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "vnetTemplateUri": "[concat(parameters('assetLocation'),'vnet.json')]",
@@ -570,8 +570,8 @@
                         "typeHandlerVersion": "2.11",
                         "autoUpgradeMinorVersion": true,
                         "settings": {
-                            "modulesUrl": "[variables('adModulesURL')]",
-                            "configurationFunction": "[variables('ADtoADConfiguration')]",
+                            "modulesUrl": "[variables('MSModulesURL')]",
+                            "configurationFunction": "[variables('AddtoADConfiguration')]",
                             "Properties": {
                                 "DomainName": "[parameters('domainName')]",
                                 "AdminCreds": {
@@ -584,7 +584,7 @@
                             "Items": {
                                 "AdminPassword": "[parameters('AdAdminPassword')]"
                             },
-                            "DataBlobUri": "[concat(parameters('assetLocation'),'ADComputerADDomain.psd1')]"
+                            "DataBlobUri": "[concat(parameters('assetLocation'),'AddComputerADDomain.psd1')]"
                         }
                     }
                 }
