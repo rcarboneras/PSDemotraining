@@ -568,7 +568,7 @@
                     "location": "[parameters('location')]",
                     "dependsOn": [
                         "[resourceId('Microsoft.Compute/virtualMachines', parameters('MSVMName'))]",
-                        "[resourceId('Microsoft.Compute/virtualMachines/extensions','CreateADForest')]"
+                        "[concat('Microsoft.Compute/virtualMachines/', parameters('MSVMName'),'/extensions/CreateADForest')]"
 
                     ],
                     "properties": {
