@@ -2,13 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.1",
     "parameters": {
-        "AdAdminUserName": {
-            "defaultValue": "Administrator",
-            "metadata": {
-                "description": "The name of the Administrator account of the Domain and VMs"
-            },
-            "type": "string"
-        },
         "AdAdminPassword": {
             "type": "securestring",
             "metadata": {
@@ -16,19 +9,19 @@
 
             }
         },
-        "DCVMName": {
-            "type": "string",
+        "AdAdminUserName": {
+            "defaultValue": "Administrator",
             "metadata": {
-                "description": "The name of the 2012 DC Server VM"
+                "description": "The name of the Administrator account of the Domain and VMs"
             },
-            "defaultValue": "2012R2-DC"
+            "type": "string"
         },
-        "DCNicName": {
-            "type": "string",
+        "assetLocation": {
+            "defaultValue": "https://raw.githubusercontent.com/rcarboneras/Psdemotraining/master/active-directory-new-domain-with-data/",
             "metadata": {
-                "description": "The name of the NIC attached to the new VM"
+                "description": "The location of resources such as templates and DSC modules that the script is dependent"
             },
-            "defaultValue": "DCNic"
+            "type": "string"
         },
         "DCNicIPAddress": {
             "type": "string",
@@ -37,93 +30,26 @@
             },
             "defaultValue": "10.0.1.200"
         },
-        "MSVMName": {
+        "DCNicName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the 2012 MS Server VM"
+                "description": "The name of the NIC attached to the new VM"
             },
-            "defaultValue": "2012R2-MS"
+            "defaultValue": "DCNic"
         },
-        "MSNicName": {
-            "type": "string",
+        "DCpublicIPAddressName": {
+            "defaultValue": "DCpublicIP",
             "metadata": {
-                "description": "The name of the NIC attached to the MS VM"
-            },
-            "defaultValue": "MSNic"
-        },
-        "MSNicIPAddress": {
-            "type": "string",
-            "metadata": {
-                "description": "The IP address of the MS VM"
-            },
-            "defaultValue": "10.0.1.210"
-        },
-        "W8VMName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the Windows 8 VM"
-            },
-            "defaultValue": "WIN8-WS"
-        },
-        "W8NicName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the NIC attached to the W8 VM"
-            },
-            "defaultValue": "W8Nic"
-        },
-        "W8NicIPAddress": {
-            "type": "string",
-            "metadata": {
-                "description": "The IP address of the W8 VM"
-            },
-            "defaultValue": "10.0.1.220"
-        },
-        "PSDemoSubnet": {
-            "type": "string",
-            "metadata": {
-                "description": "The address range of the subnet created in the new VNET"
-            },
-            "defaultValue": "10.0.1.0/24"
-        },
-        "PSDemoSubnetName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the subnet created in the new VNET"
-            },
-            "defaultValue": "PSDemoSubnet"
-        },
-        "VMSize": {
-            "type": "string",
-            "allowedValues": [
-                "Standard_D1",
-                "Standard_DS1",
-                "Standard_D2",
-                "Standard_DS2",
-                "Standard_D3",
-                "Standard_DS3",
-                "Standard_D4",
-                "Standard_DS4",
-                "Standard_D11",
-                "Standard_DS11",
-                "Standard_D12",
-                "Standard_DS12",
-                "Standard_D13",
-                "Standard_DS13",
-                "Standard_D14",
-                "Standard_DS14"
-            ],
-            "metadata": {
-                "description": "The size of the VMs Created"
-            },
-            "defaultValue": "Standard_D1"
-        },
-        "assetLocation": {
-            "defaultValue": "https://raw.githubusercontent.com/rcarboneras/Psdemotraining/master/active-directory-new-domain-with-data/",
-            "metadata": {
-                "description": "The location of resources such as templates and DSC modules that the script is dependent"
+                "description": "The name of the public IP address used by the DC"
             },
             "type": "string"
+        },
+        "DCVMName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the 2012 DC Server VM"
+            },
+            "defaultValue": "2012R2-DC"
         },
         "domainName": {
             "type": "string",
@@ -146,18 +72,19 @@
             },
             "defaultValue": "West Europe"
         },
-        "newStorageAccountName": {
+        "MSNicIPAddress": {
             "type": "string",
             "metadata": {
-                "description": "The name of the new storage account created to store the VMs disks"
-            }
-        },
-        "DCpublicIPAddressName": {
-            "defaultValue": "DCpublicIP",
-            "metadata": {
-                "description": "The name of the public IP address used by the DC"
+                "description": "The IP address of the MS VM"
             },
-            "type": "string"
+            "defaultValue": "10.0.1.210"
+        },
+        "MSNicName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the NIC attached to the MS VM"
+            },
+            "defaultValue": "MSNic"
         },
         "MSpublicIPAddressName": {
             "defaultValue": "MSpublicIP",
@@ -166,12 +93,39 @@
             },
             "type": "string"
         },
-        "W8publicIPAddressName": {
-            "defaultValue": "W8publicIP",
+        "MSVMName": {
+            "type": "string",
             "metadata": {
-                "description": "The name of the public IP address used by the W8"
+                "description": "The name of the 2012 MS Server VM"
             },
-            "type": "string"
+            "defaultValue": "2012R2-MS"
+        },
+        "networkSecurityGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "The Name of the default networkSecurityGroup"
+            },
+            "defaultValue": "PSDemoRDP-nsg"
+        },
+        "newStorageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the new storage account created to store the VMs disks"
+            }
+        },
+        "PSDemoSubnet": {
+            "type": "string",
+            "metadata": {
+                "description": "The address range of the subnet created in the new VNET"
+            },
+            "defaultValue": "10.0.1.0/24"
+        },
+        "PSDemoSubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the subnet created in the new VNET"
+            },
+            "defaultValue": "PSDemoSubnet"
         },
         "publicIPAddressType": {
             "type": "string",
@@ -190,13 +144,6 @@
                 "description": "The public RDP port for the VM"
             },
             "defaultValue": 3389
-        },
-        "networkSecurityGroupName": {
-            "type": "string",
-            "metadata": {
-                "description": "The Name of the default networkSecurityGroup"
-            },
-            "defaultValue": "PSDemoRDP-nsg"
         },
         "storageAccountType": {
             "type": "string",
@@ -225,6 +172,59 @@
                 "description": "The name of the Virtual Network to Create"
             },
             "defaultValue": "PSDemoVNET"
+        },
+        "VMSize": {
+            "type": "string",
+            "allowedValues": [
+                "Standard_D1",
+                "Standard_DS1",
+                "Standard_D2",
+                "Standard_DS2",
+                "Standard_D3",
+                "Standard_DS3",
+                "Standard_D4",
+                "Standard_DS4",
+                "Standard_D11",
+                "Standard_DS11",
+                "Standard_D12",
+                "Standard_DS12",
+                "Standard_D13",
+                "Standard_DS13",
+                "Standard_D14",
+                "Standard_DS14"
+            ],
+            "metadata": {
+                "description": "The size of the VMs Created"
+            },
+            "defaultValue": "Standard_D1"
+        },
+        "W8NicIPAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "The IP address of the W8 VM"
+            },
+            "defaultValue": "10.0.1.220"
+        },
+        "W8NicName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the NIC attached to the W8 VM"
+            },
+            "defaultValue": "W8Nic"
+        },
+        "W8publicIPAddressName": {
+            "defaultValue": "W8publicIP",
+            "metadata": {
+                "description": "The name of the public IP address used by the W8"
+            },
+            "type": "string"
+        },
+        "W8VMName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Windows 8 VM"
+            },
+            "defaultValue": "WIN8-WS"
         }
     },
     "variables": {
@@ -597,6 +597,43 @@
                 "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
                 "[resourceId('Microsoft.Network/networkInterfaces',parameters('W8NicName'))]"
             ]
+        },
+        {
+            "name": "UpdateVNetDNS",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2015-01-01",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('DCVMName'),'/extensions/CreateADForest')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('vnetwithDNSTemplateUri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "virtualNetworkName": {
+                        "value": "[parameters('virtualNetworkName')]"
+                    },
+                    "virtualNetworkAddressRange": {
+                        "value": "[parameters('virtualNetworkAddressRange')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('PSDemoSubnetName')]"
+                    },
+                    "subnetRange": {
+                        "value": "[parameters('PSDemoSubnet')]"
+                    },
+                    "DNSServerAddress": {
+                        "value": [
+                            "[parameters('DCNicIPAddress')]"
+                        ]
+                    }
+                }
+            }
         }
     ]
 }
