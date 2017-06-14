@@ -263,7 +263,7 @@
                         "properties": {
                             "priority": 1000,
                             "sourceAddressPrefix": "*",
-                            "protocol": "TCP",
+                            "protocol": "Tcp",
                             "destinationPortRange": "3389",
                             "access": "Allow",
                             "direction": "Inbound",
@@ -322,11 +322,6 @@
                     },
                     "subnetRange": {
                         "value": "[parameters('PSDemoSubnet')]"
-                    },
-                    "DNSServerAddress": {
-                        "value": [
-                            "[parameters('DCNicIPAddress')]"
-                        ]
                     }
                 },
                 "templateLink": {
@@ -639,6 +634,43 @@
                 "[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
                 "[resourceId('Microsoft.Network/networkInterfaces',parameters('W8NicName'))]"
             ]
+        },
+        {
+            "name": "UpdateVNetDNS",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2015-01-01",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('DCVMName'),'/extensions/CreateADForest')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('vnetwithDNSTemplateUri')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "virtualNetworkName": {
+                        "value": "[parameters('virtualNetworkName')]"
+                    },
+                    "virtualNetworkAddressRange": {
+                        "value": "[parameters('virtualNetworkAddressRange')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('PSDemoSubnetName')]"
+                    },
+                    "subnetRange": {
+                        "value": "[parameters('PSDemoSubnet')]"
+                    },
+                    "DNSServerAddress": {
+                        "value": [
+                            "[parameters('DCNicIPAddress')]"
+                        ]
+                    }
+                }
+            }
         }
     ]
 }
