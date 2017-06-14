@@ -61,10 +61,7 @@
                             "addressPrefix": "[parameters('subnetRange')]"
                         }
                     }
-                ],
-                "dhcpOptions": {
-                    "dnsServers": "[parameters('DNSServerAddress')]"
-                }
+                ]
             }
         }
     ]
