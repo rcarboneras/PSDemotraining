@@ -673,7 +673,7 @@
                 {
                     "apiVersion": "2015-06-15",
                     "type": "Microsoft.Compute/virtualMachines/extensions",
-                    "name": "DisableEP",
+                    "name": "[concat(parameters('W8VMName'),'/DisableEP')]",
                     "location": "[resourceGroup().location]",
                     "dependsOn": [
                         "[concat('Microsoft.Compute/virtualMachines/', parameters('W8VMName'))]"
