@@ -692,7 +692,7 @@
                             ]
                         },
                         "protectedSettings": {
-                            "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File DisableExecutionPolicy.ps1"
+                            "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File DisableExecutionPolicy.ps1"
                         }
                     }
                 }
