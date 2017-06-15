@@ -682,8 +682,8 @@
                         "displayName": "Disable-Execution-Policy"
                     },
                     "properties": {
-                        "publisher": "Microsoft.Azure.Extensions",
-                        "type": "CustomScript",
+                        "publisher": "Microsoft.Compute",
+                        "type": "CustomScriptExtension",
                         "typeHandlerVersion": "1.8",
                         "autoUpgradeMinorVersion": true,
                         "settings": {
