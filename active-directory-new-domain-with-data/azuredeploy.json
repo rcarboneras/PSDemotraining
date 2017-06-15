@@ -692,7 +692,7 @@
                             ]
                         },
                         "protectedSettings": {
-                            "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ./DisableExecutionPolicy.ps1"
+                            "commandToExecute": "Powershell.exe -Command '&{Set-ExecutionPolicy -Executionpolicy Unrestricted}'"
                         }
                     }
                 }
