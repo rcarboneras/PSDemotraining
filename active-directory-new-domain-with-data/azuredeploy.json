@@ -686,11 +686,6 @@
                         "type": "CustomScriptExtension",
                         "typeHandlerVersion": "1.8",
                         "autoUpgradeMinorVersion": true,
-                        "settings": {
-                            "fileUris": [
-                                "https://raw.githubusercontent.com/rcarboneras/PSDemotraining/master/active-directory-new-domain-with-data/DisableExecutionPolicy.ps1"
-                            ]
-                        },
                         "protectedSettings": {
                             "commandToExecute": "Powershell.exe -Command '&{Set-ExecutionPolicy -Executionpolicy Unrestricted}'"
                         }
