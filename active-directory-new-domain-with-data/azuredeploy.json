@@ -643,7 +643,8 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.Compute/virtualMachines', parameters('W8VMName'))]",
                         "[resourceId('Microsoft.Compute/virtualMachines', parameters('DCVMName'))]",
-                        "[concat('Microsoft.Compute/virtualMachines/', parameters('DCVMName'),'/extensions/CreateADForest')]"
+                        "[concat('Microsoft.Compute/virtualMachines/', parameters('DCVMName'),'/extensions/CreateADForest')]",
+                        "[concat('Microsoft.Compute/virtualMachines/', parameters('W8VMName'),'/extensions/DisableEP')]"
                     ],
                     "properties": {
                         "publisher": "Microsoft.Powershell",
@@ -672,7 +673,7 @@
                 {
                     "apiVersion": "2015-06-15",
                     "type": "Microsoft.Compute/virtualMachines/extensions",
-                    "name": "config-app",
+                    "name": "DisableEP",
                     "location": "[resourceGroup().location]",
                     "dependsOn": [
                         "[concat('Microsoft.Compute/virtualMachines/', parameters('W8VMName'))]"
@@ -687,13 +688,11 @@
                         "autoUpgradeMinorVersion": true,
                         "settings": {
                             "fileUris": [
-                                "script location"
+                                "https://raw.githubusercontent.com/rcarboneras/PSDemotraining/master/active-directory-new-domain-with-data/DisableExecutionPolicy.ps1"
                             ]
                         },
                         "protectedSettings": {
-                            "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File DisableExecutionPolicy.ps1",
-                            "storageAccountName": "myStorageAccountName",
-                            "storageAccountKey": "myStorageAccountKey"
+                            "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File DisableExecutionPolicy.ps1"
                         }
                     }
                 }
