@@ -684,15 +684,15 @@
                     "properties": {
                         "publisher": "Microsoft.Azure.Extensions",
                         "type": "CustomScript",
-                        "typeHandlerVersion": "2.0",
-                        "autoUpgradeMinorVersion": true,
+                        "typeHandlerVersion": "1.8",
+                        "autoUpgradeMinorVersion": false,
                         "settings": {
                             "fileUris": [
                                 "https://raw.githubusercontent.com/rcarboneras/PSDemotraining/master/active-directory-new-domain-with-data/DisableExecutionPolicy.ps1"
                             ]
                         },
                         "protectedSettings": {
-                            "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File DisableExecutionPolicy.ps1"
+                            "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ./DisableExecutionPolicy.ps1"
                         }
                     }
                 }
