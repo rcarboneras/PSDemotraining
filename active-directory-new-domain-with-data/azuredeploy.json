@@ -685,7 +685,7 @@
                         "publisher": "Microsoft.Azure.Extensions",
                         "type": "CustomScript",
                         "typeHandlerVersion": "1.8",
-                        "autoUpgradeMinorVersion": false,
+                        "autoUpgradeMinorVersion": true,
                         "settings": {
                             "fileUris": [
                                 "https://raw.githubusercontent.com/rcarboneras/PSDemotraining/master/active-directory-new-domain-with-data/DisableExecutionPolicy.ps1"
