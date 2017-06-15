@@ -1,0 +1,11 @@
+{
+  "User": {
+    "id": 1399004,
+    "username": "rcarboneras",
+    "name": "Raul",
+    "email": "rcarboneras@outlook.com",
+    "new_portrait": null,
+    "host": "https://gitlab.com/",
+    "two_factor_enabled": false
+  }
+}
