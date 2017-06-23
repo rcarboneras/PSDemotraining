@@ -610,7 +610,7 @@
                     "imageReference": {
                         "publisher": "MicrosoftVisualStudio",
                         "offer": "Windows",
-                        "sku": "Win81-Ent-N-x64",
+                        "sku": "2012-R2-Datacenter",
                         "version": "latest"
                     },
                     "osDisk": {
